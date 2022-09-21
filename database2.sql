@@ -2,6 +2,10 @@
 USE DATABASE altera_shop
 --drop 
 DROP TABLE shipping
+DROP TABLE user_payment_method_detail
+
+DROP TABLE detail_transaction
+DROP TABLE product_description
 -- create
 
 
@@ -15,6 +19,14 @@ CREATE TABLE `user`(
     nama_user VARCHAR (255)  not NULL,
     hp VARCHAR (13)  not NULL,
     create_at TIMESTAMP default current_timestamp()
+);
+
+CREATE TABLE `alamat_user`(
+   -- id int auto_increment primary key,
+    alamat VARCHAR (255),
+    create_at TIMESTAMP default current_timestamp(),
+    constraint fk_alamat_user_user foreign key (alamat) references user(ID_user) on delete cascade,
+    primary key (alamat)
 );
 
 CREATE TABLE `type_product`(
@@ -41,6 +53,7 @@ CREATE TABLE `merk`(
 );
 
 CREATE TABLE `product_description`(
+    id int auto_increment primary key,
     merk VARCHAR (5) ,
     product VARCHAR (5),
     deskrpsi VARCHAR (255)  not NULL,
@@ -54,6 +67,15 @@ CREATE TABLE `payment_method`(
     create_at TIMESTAMP default current_timestamp()
 );
 
+CREATE TABLE `payment_description`(
+    payment VARCHAR (5) ,
+    deskrpsi_payment VARCHAR (255) not NULL,
+    create_at TIMESTAMP default current_timestamp(),
+    foreign key (payment) references payment_method(ID_payment) on delete cascade,
+    primary key (payment)
+);
+
+
 CREATE TABLE `transaction`(
     ID_transaction VARCHAR (5) primary key,
     user VARCHAR (5),
@@ -64,6 +86,7 @@ CREATE TABLE `transaction`(
 );
 
 CREATE TABLE `detail_transaction`(
+    id int auto_increment primary key,
     nama_transaction VARCHAR (5) ,
     product VARCHAR (5),
     total_product VARCHAR (255) not NULL,
@@ -74,6 +97,7 @@ CREATE TABLE `detail_transaction`(
 );
 
 CREATE TABLE `user_payment_method_detail`(
+    id int auto_increment primary key,
     payment VARCHAR (5) ,
     user VARCHAR (5),
     payment_method_detail VARCHAR (255) not NULL,
@@ -94,6 +118,8 @@ CREATE TABLE `kurir`(
 
 ALTER TABLE kurir add ongkos_dasar VARCHAR (255) not NULL;
 ALTER TABLE kurir RENAME TO shipping
+
+ALTER TABLE user add alamat VARCHAR (255);
 
 
 
